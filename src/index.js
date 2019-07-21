@@ -1,18 +1,22 @@
+// @flow
+
+// Styles
+import '@vkontakte/vkui/dist/vkui.css';
+
 import 'core-js/es6/map';
 import 'core-js/es6/set';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import connect from '@vkontakte/vkui-connect';
-import App from './App';
-// import registerServiceWorker from './sw';
+import React                                       from 'react';
+import ReactDOM                                    from 'react-dom';
+import connect                                     from '@vkontakte/vkui-connect';
+import { library }                                 from '@fortawesome/fontawesome-svg-core'
+import { faCircleNotch, faRss, faUser, faUserCog } from "@fortawesome/free-solid-svg-icons";
+import App                                         from './App';
 
-// Init VK App
+library.add(faCircleNotch, faUserCog, faUser, faRss);
+
 connect.send('VKWebAppInit', {});
 
-// Если вы хотите, чтобы ваше веб-приложение работало в оффлайне и загружалось быстрее,
-// расскомментируйте строку с registerServiceWorker();
-// Но не забывайте, что на данный момент у технологии есть достаточно подводных камней
-// Подробнее про сервис воркеры можно почитать тут — https://vk.cc/8MHpmT 
-// registerServiceWorker();
-
-ReactDOM.render(<App />, document.getElementById('root'));
+const root = document.getElementById('root');
+if (root) {
+  ReactDOM.render(<App />, root);
+}

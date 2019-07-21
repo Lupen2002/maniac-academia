@@ -1,46 +1,58 @@
-import React from 'react';
-import connect from '@vkontakte/vkui-connect';
-import { View } from '@vkontakte/vkui';
-import '@vkontakte/vkui/dist/vkui.css';
+// @flow
 
-import Home from './panels/Home';
-import Persik from './panels/Persik';
+import * as React from "react";
+import { useState, useEffect } from "react";
+import connect from "@vkontakte/vkui-connect";
+import { Epic, View } from "@vkontakte/vkui";
+import { Panel, PanelHeader } from "@vkontakte/vkui";
 
-class App extends React.Component {
-	constructor(props) {
-		super(props);
+import type { VkConnectEvent, VKWebAppGetUserInfoResult } from "./types/vk";
+import EventFlow                                          from "./panels/events/event-flow/EventFlow";
+import EventsAdmin                                        from "./panels/events/admin/EventsAdmin";
+import AppTabbar                                          from "./companents/menu/AppTabbar";
 
-		this.state = {
-			activePanel: 'home',
-			fetchedUser: null,
-		};
-	}
+type Props = {};
 
-	componentDidMount() {
-		connect.subscribe((e) => {
-			switch (e.detail.type) {
-				case 'VKWebAppGetUserInfoResult':
-					this.setState({ fetchedUser: e.detail.data });
-					break;
-				default:
-					console.log(e.detail.type);
-			}
-		});
-		connect.send('VKWebAppGetUserInfo', {});
-	}
+const App = (p: Props) => {
+  const [activePanel, setActivePanel] = useState("events-feed");
+  const [activeStory, setActiveStory] = useState("events");
+  const [currentUser, setCurrentUser] = useState<?VKWebAppGetUserInfoResult>(
+    null
+  );
+  const [token, setToken] = useState<?string>(null);
 
-	go = (e) => {
-		this.setState({ activePanel: e.currentTarget.dataset.to })
-	};
+  useEffect(() => {
+    connect.subscribe((e: VkConnectEvent) => {
+      switch (e.detail.type) {
+        case "VKWebAppGetUserInfoResult":
+          setCurrentUser(e.detail.data);
+          break;
+        case "VKWebAppAccessTokenReceived":
+          setToken(e.detail.data.access_tokean);
+          break;
+        default:
+        //console.log(e);
+      }
+    });
+    connect.send("VKWebAppGetUserInfo", {});
+  }, []);
 
-	render() {
-		return (
-			<View activePanel={this.state.activePanel}>
-				<Home id="home" fetchedUser={this.state.fetchedUser} go={this.go} />
-				<Persik id="persik" go={this.go} />
-			</View>
-		);
-	}
-}
+  return (
+    <Epic
+      activeStory={activeStory}
+      tabbar={<AppTabbar active={activeStory} go={setActiveStory} />}
+    >
+      <View id="events" activePanel={activePanel}>
+        <EventFlow id="events-feed" user={currentUser} go={setActivePanel} />
+        <EventsAdmin id="events-admin" user={currentUser} go={setActivePanel} />
+      </View>
+      <View id="user" activePanel="user-main">
+        <Panel id="user-main">
+          <PanelHeader>Кабинет</PanelHeader>
+        </Panel>
+      </View>
+    </Epic>
+  );
+};
 
 export default App;
