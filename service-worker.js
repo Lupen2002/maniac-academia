@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/maniac-academia/precache-manifest.7c9e4b41090ee0a2a40948d743f4ff24.js"
+  "/maniac-academia/precache-manifest.6487dd1f395d8abdb99b9cdb27ab0445.js"
 );
 
 workbox.clientsClaim();
