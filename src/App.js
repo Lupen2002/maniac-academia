@@ -10,6 +10,7 @@ import type { VkConnectEvent, VKWebAppGetUserInfoResult } from "./types/vk";
 import EventFlow                                          from "./panels/events/event-flow/EventFlow";
 import EventsAdmin                                        from "./panels/events/admin/EventsAdmin";
 import AppTabbar                                          from "./companents/menu/AppTabbar";
+import AddEventsAdmin                                     from "./panels/events/admin/AddEventsAdmin";
 
 type Props = {};
 
@@ -28,7 +29,7 @@ const App = (p: Props) => {
           setCurrentUser(e.detail.data);
           break;
         case "VKWebAppAccessTokenReceived":
-          setToken(e.detail.data.access_tokean);
+          setToken(e.detail.data.access_token);
           break;
         default:
         //console.log(e);
@@ -44,7 +45,8 @@ const App = (p: Props) => {
     >
       <View id="events" activePanel={activePanel}>
         <EventFlow id="events-feed" user={currentUser} go={setActivePanel} />
-        <EventsAdmin id="events-admin" user={currentUser} go={setActivePanel} />
+        <EventsAdmin id="events-admin" token={token} user={currentUser} go={setActivePanel} />
+        <AddEventsAdmin id="add-events-admin" token={token} user={currentUser} go={setActivePanel} />
       </View>
       <View id="user" activePanel="user-main">
         <Panel id="user-main">

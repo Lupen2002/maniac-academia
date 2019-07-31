@@ -19,12 +19,24 @@ export type VKWebAppGetUserInfoResult = {
   timezone: number
 }
 
+
 export type VkConnectResultGetUserInfoResult = {
   type: "VKWebAppGetUserInfoResult",
   data: VKWebAppGetUserInfoResult
 }
 
-export type VkConnectResult = VkConnectResultGetUserInfoResult
+export type VKWebAppAccessTokenReceived = {
+  access_token: string,
+  scope: string
+}
+
+export type VKConnectResultAccessToken = {
+  type: 'VKWebAppAccessTokenReceived',
+  data: VKWebAppAccessTokenReceived
+}
+
+export type VkConnectResult = VkConnectResultGetUserInfoResult|VKConnectResultAccessToken
+
 export type VkConnectEvent = {
   detail:VkConnectResult
 }
