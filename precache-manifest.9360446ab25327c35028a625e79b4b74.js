@@ -4,23 +4,23 @@ self.__precacheManifest = [
     "url": "/maniac-academia/static/js/runtime~main.af80217a.js"
   },
   {
-    "revision": "37ffae5f862620d20410",
-    "url": "/maniac-academia/static/js/main.742d4f9c.chunk.js"
+    "revision": "69616543b5c2c6985c5a",
+    "url": "/maniac-academia/static/js/main.909b8852.chunk.js"
   },
   {
-    "revision": "0fa282f9dd38cee8d817",
-    "url": "/maniac-academia/static/js/2.ca420c93.chunk.js"
+    "revision": "e94472c08e5f6bb6a3d5",
+    "url": "/maniac-academia/static/js/2.11b89c72.chunk.js"
   },
   {
-    "revision": "37ffae5f862620d20410",
+    "revision": "69616543b5c2c6985c5a",
     "url": "/maniac-academia/static/css/main.6ed88586.chunk.css"
   },
   {
-    "revision": "0fa282f9dd38cee8d817",
+    "revision": "e94472c08e5f6bb6a3d5",
     "url": "/maniac-academia/static/css/2.5098cceb.chunk.css"
   },
   {
-    "revision": "78b2fba01be746881f2b7794ed185a63",
+    "revision": "9f07583d556b627aa591a84455dd66eb",
     "url": "/maniac-academia/index.html"
   }
 ];
