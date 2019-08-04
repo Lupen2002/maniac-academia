@@ -1,14 +1,14 @@
 // @flow
 
 import * as React                            from "react";
-import AppHeader                             from "../components/header/AppHeader";
-import { isAdmin }                           from "../../../utils/admin";
+import AppHeader                             from "../../components/header/AppHeader";
+import { isAdmin }                           from "../../../../utils/admin";
 import { Cell, Div, Panel }                  from "@vkontakte/vkui";
-import type { VKWebAppGetUserInfoResult }    from "../../../types/vk";
+import type { VKWebAppGetUserInfoResult }    from "../../../../types/vk";
 import { FormLayout, Input }                 from "@vkontakte/vkui";
-import connect                               from '@vkontakte/vkui-connect'
 import { Checkbox, FormLayoutGroup, Button } from "@vkontakte/vkui";
-import { storageGetEvent, storageSetEvent }  from "./utils/api";
+import { storageGetEvent, storageSetEvent }  from "../utils/api";
+import { postEvents }                        from "./utils";
 
 type Props = {
   id: string,
@@ -19,20 +19,14 @@ type Props = {
 
 const AddEventsAdmin = (p: Props) => {
   const [name, setName] = React.useState(''),
-        [price, setPrice] = React.useState(''),
-        [time, setTime] = React.useState(0),
+        [price, setPrice] = React.useState<string>(''),
+        [time, setTime] = React.useState('17:00'),
         [days, setDays] = React.useState<number[]>([]);
 
   const sendEvents = async () => {
-    if (!p.token) throw Error('token is required!');
-
     const event = {name, price, time, days};
-    const oldEvents = await storageGetEvent(p.token);
-
-    if (!p.token) throw Error('token is required!');
-    await storageSetEvent([...oldEvents, event], p.token);
-
-    p.go("events-admin")
+    await postEvents(event);
+    p.go("events-admin");
   };
 
   const onCheck = (day: number) => async (e: SyntheticEvent<HTMLInputElement>) => {
@@ -52,7 +46,8 @@ const AddEventsAdmin = (p: Props) => {
       }
       case 'price': {
         const p = e.currentTarget.value;
-        if (/^\d*$/g.test(p)) {
+        if (/^[0-9]*$/.test(p)) {
+          console.log('!!!!', p);
           setPrice(p);
         }
         return
@@ -75,16 +70,16 @@ const AddEventsAdmin = (p: Props) => {
       </AppHeader>
       <FormLayout>
         <Input type="text" top="Название" value={name} onChange={eventHandler('name')} />
-        <Input type="number" top="Цена" value={price} onChange={eventHandler('price')}/>
+        <Input type="number" value={price+''} onChange={eventHandler('price')}/>
         <Input type="time" top="Время" value={time} onChange={eventHandler('time')}/>
         <FormLayoutGroup top="Повторять каждую неделю">
-          <Checkbox checked={days.includes(0)} onClick={onCheck(0)}>Пн</Checkbox>
-          <Checkbox checked={days.includes(1)} onClick={onCheck(1)}>Вт</Checkbox>
-          <Checkbox checked={days.includes(2)} onClick={onCheck(2)}>Ср</Checkbox>
-          <Checkbox checked={days.includes(3)} onClick={onCheck(3)}>Чт</Checkbox>
-          <Checkbox checked={days.includes(4)} onClick={onCheck(4)}>Пт</Checkbox>
-          <Checkbox checked={days.includes(5)} onClick={onCheck(5)}>Сб</Checkbox>
-          <Checkbox checked={days.includes(6)} onClick={onCheck(6)}>Вс</Checkbox>
+          <Checkbox checked={days.includes(0)} onChange={onCheck(0)}>Пн</Checkbox>
+          <Checkbox checked={days.includes(1)} onChange={onCheck(1)}>Вт</Checkbox>
+          <Checkbox checked={days.includes(2)} onChange={onCheck(2)}>Ср</Checkbox>
+          <Checkbox checked={days.includes(3)} onChange={onCheck(3)}>Чт</Checkbox>
+          <Checkbox checked={days.includes(4)} onChange={onCheck(4)}>Пт</Checkbox>
+          <Checkbox checked={days.includes(5)} onChange={onCheck(5)}>Сб</Checkbox>
+          <Checkbox checked={days.includes(6)} onChange={onCheck(6)}>Вс</Checkbox>
         </FormLayoutGroup>
         <Button size="xl" onClick={eventHandler('submit')}>Добавить</Button>
       </FormLayout>

@@ -8,9 +8,9 @@ import { Panel, PanelHeader } from "@vkontakte/vkui";
 
 import type { VkConnectEvent, VKWebAppGetUserInfoResult } from "./types/vk";
 import EventFlow                                          from "./panels/events/event-flow/EventFlow";
-import EventsAdmin                                        from "./panels/events/admin/EventsAdmin";
+import EventsAdmin                                        from "./panels/events/admin/list/EventsAdmin";
 import AppTabbar                                          from "./companents/menu/AppTabbar";
-import AddEventsAdmin                                     from "./panels/events/admin/AddEventsAdmin";
+import AddEventsAdmin                                     from "./panels/events/admin/add/AddEventsAdmin";
 
 type Props = {};
 
