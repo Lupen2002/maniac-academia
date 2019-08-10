@@ -1,26 +1,25 @@
 // @flow
 
+import type { Action }    from "../actions";
+import { USER_SET_TOKEN } from "../actions/user";
 
-import type { Action }                  from "../actions";
-import { createActions, handleActions } from "redux-actions";
-
-type UserState = {
-  user?: any
-}
+export type UserState = {
+  token?: string
+};
 
 const defaultState = {};
 
-const options = {
-  prefix   : 'user',
-  namespace: '_'
+export const userReducer = (
+  state: UserState = defaultState,
+  action?: Action
+) => {
+  if (action && action.type) {
+    switch (action.type) {
+      case USER_SET_TOKEN:
+        return { ...state, token: action.payload };
+      default: return state;
+    }
+  } else {
+    return state
+  }
 };
-
-
-export const userReducer = handleActions(
-  new Map([
-            [
-              userActions.SET_PROFILES,
-              (state: UserState, action: Action) => ({...state, user: action.payload})
-            ]
-          ])
-);
